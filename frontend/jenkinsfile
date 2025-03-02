@@ -35,22 +35,22 @@ pipeline {
         dir('frontend') {
           script {
             try {
-              sh 'docker stop ${params.container_name'
-              sh 'docker rm ${params.container_name}'
-              sh 'docker rmi ${params.image_name}:${params.tag_image}'
+              sh 'docker stop pagina_web'
+              sh 'docker rm pagina_web'
+              sh 'docker rmi pagina_img:lts'
             } catch (Exception e) {
               echo 'Exception occurred: ' + e.toString()
             }
           }
           sh 'npm run build'
-          sh 'docker build -t ${params.image_name}:${params.tag_image} .'
+          sh 'docker build -t pagina_img:lts .'
         }
       }
     }
 
     stage('deploy') {
       steps {
-        sh 'docker run -d -p ${params.container_port}:8082 --name ${params.container_name} ${params.image_name}:${params.tag_image}'
+        sh 'docker run -d -p 8082:8082 --name pagina_web pagina_img:lts'
       }
     }
   }
