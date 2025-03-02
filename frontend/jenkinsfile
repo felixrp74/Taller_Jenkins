@@ -9,13 +9,13 @@ pipeline {
     string(name: 'container_name', defaultValue: 'pagina_web', description: 'Nombre del contenedor de docker.')
     string(name: 'image_name', defaultValue: 'pagina_img', description: 'Nombre de la imagene docker.')
     string(name: 'tag_image', defaultValue: 'lts', description: 'Tag de la imagen de la página.')
-    string(name: 'container_port', defaultValue: '80', description: 'Puerto que usa el contenedor')
+    string(name: 'container_port', defaultValue: '8082', description: 'Puerto que usa el contenedor')
   }
 
   stages {
     stage('install') {
       steps {
-        git branch: 'develop', url: 'https://github.com/LuisArana631/Taller_Jenkins.git'
+        git branch: 'master', url: 'https://github.com/felixrp74/Taller_Jenkins.git'
         dir('frontend') {
           sh 'npm install'
         }
@@ -50,7 +50,7 @@ pipeline {
 
     stage('deploy') {
       steps {
-        sh 'docker run -d -p ${container_port}:80 --name ${container_name} ${image_name}:${tag_image}'
+        sh 'docker run -d -p ${container_port}:8082 --name ${container_name} ${image_name}:${tag_image}'
       }
     }
   }
